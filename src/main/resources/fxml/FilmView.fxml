@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+    Vista FXML para la gestión de películas del sistema Sakila.
+    Diseño responsivo con tabla central y panel lateral para formulario CRUD.
+-->
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.sakila.controller.FilmController"
+            styleClass="root-pane">
+
+    <!-- ==================== PANEL SUPERIOR: Navegación con Pestañas ==================== -->
+    <top>
+        <TabPane styleClass="navigation-tabs" tabClosingPolicy="UNAVAILABLE">
+            <Tab text="👥 Clientes" styleClass="nav-tab">
+                <VBox alignment="CENTER" spacing="20">
+                    <padding><Insets top="50"/></padding>
+                    <Label text="Módulo de Clientes" styleClass="placeholder-label"/>
+                    <Label text="(Próximamente)" styleClass="placeholder-subtitle"/>
+                </VBox>
+            </Tab>
+            
+            <Tab text="🎬 Películas" styleClass="nav-tab">
+                <!-- El contenido principal se carga aquí mediante el centro del BorderPane -->
+                <Label text="Pestaña activa - Ver contenido central" styleClass="placeholder-subtitle"/>
+            </Tab>
+            
+            <Tab text="📦 Inventario" styleClass="nav-tab">
+                <VBox alignment="CENTER" spacing="20">
+                    <padding><Insets top="50"/></padding>
+                    <Label text="Módulo de Inventario" styleClass="placeholder-label"/>
+                    <Label text="(Próximamente)" styleClass="placeholder-subtitle"/>
+                </VBox>
+            </Tab>
+            
+            <Tab text="📊 Reportes" styleClass="nav-tab">
+                <VBox alignment="CENTER" spacing="20">
+                    <padding><Insets top="50"/></padding>
+                    <Label text="Módulo de Reportes" styleClass="placeholder-label"/>
+                    <Label text="(Próximamente)" styleClass="placeholder-subtitle"/>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </top>
+
+    <!-- ==================== PANEL CENTRAL: Tabla de Películas ==================== -->
+    <center>
+        <VBox styleClass="table-container">
+            <!-- Título de la sección -->
+            <HBox styleClass="section-header">
+                <Label text="📋 Listado de Películas" styleClass="section-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="Total: " styleClass="section-subtitle"/>
+                <Label fx:id="lblTotal" text="0" styleClass="section-subtitle"/>
+            </HBox>
+            
+            <!-- Tabla de resultados -->
+            <TableView fx:id="filmTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="80" styleClass="table-column-id"/>
+                    <TableColumn fx:id="colTitle" text="Título" prefWidth="300" styleClass="table-column-title"/>
+                    <TableColumn fx:id="colYear" text="Año" prefWidth="100" styleClass="table-column-year"/>
+                    <TableColumn fx:id="colRating" text="Clasificación" prefWidth="120" styleClass="table-column-rating"/>
+                </columns>
+                
+                <!-- Placeholder cuando no hay datos -->
+                <placeholder>
+                    <VBox alignment="CENTER" spacing="10">
+                        <Label text="📽️" style="-fx-font-size: 48px;"/>
+                        <Label text="No hay películas para mostrar" styleClass="placeholder-label"/>
+                        <Label text="Haga clic en 'Nuevo' para agregar una película" styleClass="placeholder-subtitle"/>
+                    </VBox>
+                </placeholder>
+            </TableView>
+            
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+        </VBox>
+    </center>
+
+    <!-- ==================== PANEL LATERAL DERECHO: Formulario CRUD ==================== -->
+    <right>
+        <VBox styleClass="form-panel" spacing="15" prefWidth="350">
+            <!-- Encabezado del formulario -->
+            <Label text="✏️ Gestión de Película" styleClass="form-title"/>
+            <Separator/>
+            
+            <!-- Campo: Título -->
+            <VBox spacing="5">
+                <Label text="Título *" styleClass="form-label"/>
+                <TextField fx:id="txtTitle" promptText="Ingrese el título de la película" styleClass="form-field"/>
+            </VBox>
+            
+            <!-- Campo: Descripción -->
+            <VBox spacing="5">
+                <Label text="Descripción" styleClass="form-label"/>
+                <TextArea fx:id="txtDescription" 
+                         promptText="Ingrese una breve descripción..."
+                         wrapText="true"
+                         prefRowCount="4"
+                         styleClass="form-field"/>
+            </VBox>
+            
+            <!-- Campo: Año de Lanzamiento -->
+            <VBox spacing="5">
+                <Label text="Año de Lanzamiento *" styleClass="form-label"/>
+                <TextField fx:id="txtYear" promptText="Ej: 2024" styleClass="form-field"/>
+            </VBox>
+            
+            <!-- Campo: Idioma (ComboBox simulando Foreign Key) -->
+            <VBox spacing="5">
+                <Label text="Idioma" styleClass="form-label"/>
+                <ComboBox fx:id="cmbLanguage" maxWidth="Infinity" styleClass="form-field"/>
+            </VBox>
+            
+            <!-- Campo: Clasificación -->
+            <VBox spacing="5">
+                <Label text="Clasificación" styleClass="form-label"/>
+                <ComboBox fx:id="cmbRating" maxWidth="Infinity" styleClass="form-field"/>
+            </VBox>
+            
+            <!-- Espaciador -->
+            <Region VBox.vgrow="ALWAYS"/>
+            
+            <!-- Botones de Acción CRUD -->
+            <VBox spacing="10">
+                <Separator/>
+                
+                <!-- Fila 1: Nuevo y Guardar -->
+                <HBox spacing="10">
+                    <Button fx:id="btnNew" 
+                           text="➕ Nuevo" 
+                           onAction="#handleNew"
+                           styleClass="btn-new"
+                           maxWidth="Infinity"
+                           HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="btnSave" 
+                           text="💾 Guardar" 
+                           onAction="#handleSave"
+                           styleClass="btn-save"
+                           maxWidth="Infinity"
+                           HBox.hgrow="ALWAYS"/>
+                </HBox>
+                
+                <!-- Fila 2: Actualizar y Eliminar -->
+                <HBox spacing="10">
+                    <Button fx:id="btnUpdate" 
+                           text="✏️ Actualizar" 
+                           onAction="#handleUpdate"
+                           styleClass="btn-update"
+                           maxWidth="Infinity"
+                           HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="btnDelete" 
+                           text="🗑️ Eliminar" 
+                           onAction="#handleDelete"
+                           styleClass="btn-delete"
+                           maxWidth="Infinity"
+                           HBox.hgrow="ALWAYS"/>
+                </HBox>
+            </VBox>
+            
+            <!-- Nota informativa -->
+            <Label text="* Campos obligatorios" 
+                   styleClass="form-note"
+                   wrapText="true"/>
+            
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+        </VBox>
+    </right>
+
+</BorderPane>

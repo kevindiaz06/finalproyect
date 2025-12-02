@@ -1,0 +1,3 @@
+com\sakila\model\Film.class
+com\sakila\controller\FilmController.class
+com\sakila\SakilaApp.class
